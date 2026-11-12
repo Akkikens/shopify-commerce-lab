@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# No Shopify, AWS or GitHub secrets are used anywhere in CI: the Function runs
+# in Shopify's local function-runner, AWS is exercised with mocks and CDK
+# synth, and the storefront reads the public mock.shop Storefront API.
+jobs:
+  checks:
+    name: Typecheck, lint, unit tests, builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci # postinstall: prisma generate + Function typegen + Admin API codegen
+      - name: Typecheck (app, function, pricing, webhooks, infra, storefront + hydrogen gql check)
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Unit tests (function logic, pricing, webhooks, CDK assertions, storefront libs)
+        run: npm run test:unit
+      - name: Build embedded admin app
+        run: npm run build
+      - name: CDK synth (bundles the three Lambdas; no AWS credentials)
+        run: npm run synth --workspace @commerce-lab/infra -- --quiet
+
+  function:
+    name: Discount Function fixture tests (WASM)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Build with Shopify CLI (Javy) and run fixtures in function-runner
+        run: npm run test:function
+
+  storefront-e2e:
+    name: Hydrogen storefront smoke test (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: storefront
+      - name: Playwright against the production Worker build in MiniOxygen
+        run: npm run test:e2e
+        env:
+          PUBLIC_STORE_DOMAIN: mechanical-keyboards.mock.shop
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: storefront/test-results
+          retention-days: 7
