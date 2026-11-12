@@ -1,0 +1,33 @@
+query CartInput($bundleTags: [String!]) {
+  cart {
+    lines {
+      id
+      quantity
+      cost {
+        subtotalAmount {
+          amount
+        }
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            id
+            isGiftCard
+            hasTags(tags: $bundleTags) {
+              tag
+              hasTag
+            }
+          }
+        }
+      }
+    }
+  }
+  discount {
+    discountClasses
+    metafield(namespace: "$app:volume-bundle", key: "function-configuration") {
+      jsonValue
+    }
+  }
+}

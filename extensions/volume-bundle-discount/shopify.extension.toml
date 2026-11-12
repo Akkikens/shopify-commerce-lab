@@ -1,0 +1,25 @@
+# Discount Function (Discount Function API, cart lines target).
+# Template scaffolded with `shopify app generate extension --template discount --flavor typescript`
+# layout; the bundled schema.graphql is the one that ships with that template.
+api_version = "2026-07"
+
+[[extensions]]
+name = "t:name"
+handle = "volume-bundle-discount"
+type = "function"
+description = "t:description"
+
+  [[extensions.targeting]]
+  target = "cart.lines.discounts.generate.run"
+  input_query = "src/cart_lines_discounts_generate_run.graphql"
+  export = "cart-lines-discounts-generate-run"
+
+  # The discount's configuration metafield is exposed to the input query as
+  # GraphQL variables: top-level JSON keys become `$variables` (here: $bundleTags).
+  [extensions.input.variables]
+  namespace = "$app:volume-bundle"
+  key = "function-configuration"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"

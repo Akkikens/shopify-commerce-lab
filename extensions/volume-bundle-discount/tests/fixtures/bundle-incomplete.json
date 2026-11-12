@@ -1,0 +1,110 @@
+{
+  "payload": {
+    "export": "cart-lines-discounts-generate-run",
+    "target": "cart.lines.discounts.generate.run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/0",
+            "quantity": 1,
+            "cost": {
+              "subtotalAmount": {
+                "amount": "129.99"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/100",
+              "product": {
+                "id": "gid://shopify/Product/200",
+                "isGiftCard": false,
+                "hasTags": [
+                  {
+                    "tag": "bundle:keyboard",
+                    "hasTag": true
+                  },
+                  {
+                    "tag": "bundle:mouse",
+                    "hasTag": false
+                  },
+                  {
+                    "tag": "bundle:headset",
+                    "hasTag": false
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 1,
+            "cost": {
+              "subtotalAmount": {
+                "amount": "49.99"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/101",
+              "product": {
+                "id": "gid://shopify/Product/201",
+                "isGiftCard": false,
+                "hasTags": [
+                  {
+                    "tag": "bundle:keyboard",
+                    "hasTag": false
+                  },
+                  {
+                    "tag": "bundle:mouse",
+                    "hasTag": true
+                  },
+                  {
+                    "tag": "bundle:headset",
+                    "hasTag": false
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "discount": {
+        "discountClasses": [
+          "ORDER"
+        ],
+        "metafield": {
+          "jsonValue": {
+            "volumeTiers": [
+              {
+                "minQuantity": 3,
+                "percentage": 5
+              },
+              {
+                "minQuantity": 5,
+                "percentage": 10
+              },
+              {
+                "minQuantity": 10,
+                "percentage": 15
+              }
+            ],
+            "bundleTags": [
+              "bundle:keyboard",
+              "bundle:mouse",
+              "bundle:headset"
+            ],
+            "bundle": {
+              "amountOff": "20",
+              "maxBundles": 2,
+              "message": "Battlestation bundle"
+            }
+          }
+        }
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

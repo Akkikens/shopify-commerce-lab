@@ -1,0 +1,4 @@
+{
+  "name": "Volume + bundle discount",
+  "description": "Tiered volume pricing on cart lines plus a fixed-amount bundle discount on the order subtotal."
+}
