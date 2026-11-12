@@ -1,0 +1,89 @@
+# Shopify app configuration. `client_id` is intentionally blank: run
+# `npm run config:link` (shopify app config link) against your own Partner app
+# to fill it in. Nothing in this repo requires a Partner account to build or test.
+name = "commerce-lab"
+client_id = ""
+application_url = "https://example.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[access_scopes]
+# write_products: price lists / fixed prices (Markets + Catalogs) and the discount Function config
+# read_markets, write_markets: market + catalog management
+# read_inventory, read_locations: inventory levels across locations
+# read_orders: orders/create webhook
+# write_discounts: create the automatic discount backed by the Function
+scopes = "write_products,read_markets,write_markets,read_inventory,read_locations,read_orders,write_discounts"
+
+[auth]
+redirect_urls = ["https://example.com/api/auth"]
+
+[webhooks]
+api_version = "2026-10"
+
+  # Handled by: /app/routes/webhooks.app.uninstalled.tsx
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = ["app/uninstalled"]
+
+  # Handled by: /app/routes/webhooks.app.scopes_update.tsx
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+  # Commerce events go straight to the AWS ingest Lambda (infra/), not to this
+  # app server: HMAC check + dedupe on X-Shopify-Webhook-Id -> SQS -> S3.
+  # After `cdk deploy`, replace the uri below with the `WebhookUrl` stack output
+  # and uncomment. (orders/create needs protected customer data access approval
+  # for public apps; dev stores work once it's declared in the Partner Dashboard.)
+  # [[webhooks.subscriptions]]
+  # topics = ["orders/create", "inventory_levels/update"]
+  # uri = "https://<api-id>.execute-api.<region>.amazonaws.com/webhooks/shopify"
+
+  # Mandatory compliance topic for public apps only
+  # See: https://shopify.dev/docs/apps/build/privacy-law-compliance
+  # [[webhooks.subscriptions]]
+  # uri = "/webhooks/customers/data_request"
+  # compliance_topics = ["customers/data_request"]
+
+  # [[webhooks.subscriptions]]
+  # uri = "/webhooks/customers/redact"
+  # compliance_topics = ["customers/redact"]
+
+  # [[webhooks.subscriptions]]
+  # uri = "/webhooks/shop/redact"
+  # compliance_topics = ["shop/redact"]
+
+# Only receive Events when a variant's price changes and the product status is active.
+# See: https://shopify.dev/docs/apps/build/events-webhooks
+[events]
+api_version = "2026-10"
+
+  [[events.subscription]]
+  handle = "product-price-change"
+  topic = "Product"
+  actions = ["update"]
+  triggers = ["product.variants.price", "product.variants.compareAtPrice"]
+  uri = "/webhooks/products/update"
+  query = """
+  query product_variant_price_change($productId: ID!, $variantsId: ID!) {
+    product(id: $productId) {
+      id
+      title
+      status
+    }
+    productVariant(id: $variantsId) {
+      id
+      title
+      price
+      compareAtPrice
+    }
+  }
+  """
+  query_filter = "product.status:'ACTIVE'"
+
+[pos]
+embedded = false
