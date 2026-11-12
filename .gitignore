@@ -32,3 +32,7 @@ pnpm-lock.yaml
 # Generated GraphQL types (npm install runs codegen)
 /packages/pricing/src/generated/
 /extensions/*/generated/
+
+# CDK
+infra/cdk.out/
+infra/cdk.context.json
