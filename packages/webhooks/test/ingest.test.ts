@@ -71,7 +71,7 @@ describe('ingest handler', () => {
     expect(dedupe.keys.size).toBe(0);
   });
 
-  it('keeps dedupe keys for longer than Shopify retries (48h)', () => {
-    expect(DEDUPE_TTL_SECONDS).toBeGreaterThan(48 * 3600);
+  it("keeps dedupe keys longer than Shopify's retry window (8 retries over 4h)", () => {
+    expect(DEDUPE_TTL_SECONDS).toBeGreaterThan(4 * 3600);
   });
 });

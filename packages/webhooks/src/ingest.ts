@@ -6,8 +6,12 @@ import type { DedupeStore, Queue, SecretSource } from './ports';
 export const SUPPORTED_TOPICS = ['orders/create', 'inventory_levels/update'] as const;
 export type SupportedTopic = (typeof SUPPORTED_TOPICS)[number];
 
-/** Shopify retries failed deliveries for up to 48h; keep dedupe keys a bit longer. */
-export const DEDUPE_TTL_SECONDS = 72 * 60 * 60;
+/**
+ * Shopify retries a failed delivery up to 8 times over 4 hours (and gives each
+ * attempt 5 seconds). Keep dedupe keys for a day so every retry of a delivery
+ * we already queued is recognised, with margin for clock skew and slow retries.
+ */
+export const DEDUPE_TTL_SECONDS = 24 * 60 * 60;
 
 export interface IngestRequest {
   headers: HeaderBag;
