@@ -1,0 +1,42 @@
+:root {
+  --bg: #fafaf9;
+  --fg: #1c1917;
+  --muted: #78716c;
+  --accent: #b45309;
+  --card: #ffffff;
+  --border: #e7e5e4;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0c0a09; --fg: #f5f5f4; --muted: #a8a29e; --accent: #f59e0b; --card: #1c1917; --border: #292524; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.5; }
+a { color: inherit; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+.site-header { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.brand { font-weight: 700; text-decoration: none; }
+.market-switcher { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; }
+.market-switcher a { text-decoration: none; padding: 4px 8px; border: 1px solid var(--border); border-radius: 999px; }
+.market-switcher a[aria-current='true'] { border-color: var(--accent); color: var(--accent); }
+.muted { color: var(--muted); }
+.grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+.card a { text-decoration: none; }
+.card img, .product-media img { width: 100%; height: auto; border-radius: 8px; display: block; }
+.card h2 { font-size: 16px; margin: 8px 0 4px; }
+.price { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; margin: 4px 0; }
+.price-current { font-weight: 700; font-size: 18px; }
+.price-compare { color: var(--muted); }
+.price-badge { background: var(--accent); color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+.product { display: grid; gap: 32px; grid-template-columns: 1fr; }
+@media (min-width: 800px) { .product { grid-template-columns: 1fr 1fr; } }
+.option { border: none; padding: 0; margin: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+.option legend { font-weight: 600; margin-bottom: 4px; }
+.option-value { border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; text-decoration: none; }
+.option-value[aria-current='true'] { border-color: var(--accent); }
+.specs table { width: 100%; border-collapse: collapse; }
+.specs th, .specs td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
+.specs th { width: 40%; color: var(--muted); font-weight: 500; }
+.site-footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 16px; }

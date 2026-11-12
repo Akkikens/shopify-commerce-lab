@@ -1,0 +1,9 @@
+node_modules
+/build
+/.react-router
+.env
+storefront-graphql-env.d.ts
+customer-account-graphql-env.d.ts
+/test-results
+/playwright-report
+/.mf

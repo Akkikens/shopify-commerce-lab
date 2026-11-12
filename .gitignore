@@ -36,3 +36,10 @@ pnpm-lock.yaml
 # CDK
 infra/cdk.out/
 infra/cdk.context.json
+
+# Storefront build output (also in storefront/.gitignore; listed here for eslint --ignore-path)
+/storefront/build/
+/storefront/.react-router/
+/storefront/test-results/
+/storefront/playwright-report/
+/storefront/*-graphql-env.d.ts

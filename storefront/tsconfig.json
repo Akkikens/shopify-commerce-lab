@@ -1,0 +1,21 @@
+{
+  "include": ["env.d.ts", "server.ts", "app/**/*.ts", "app/**/*.tsx", ".react-router/types/**/*", "e2e/**/*.ts", "playwright.config.ts", "vite.config.ts", "react-router.config.ts"],
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["@shopify/oxygen-workers-types", "vite/client", "node"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": { "~/*": ["app/*"] },
+    "rootDirs": [".", "./.react-router/types"],
+    "plugins": [{ "name": "@shopify/hydrogen/ts-plugin" }]
+  }
+}

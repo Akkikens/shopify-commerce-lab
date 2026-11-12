@@ -66,8 +66,21 @@ module.exports = {
           },
           typescript: {
             alwaysTryTypes: true,
+            noWarnOnMultipleProjects: true,
+            // Each workspace has its own tsconfig (and the storefront its own ~/ alias).
+            project: [
+              "tsconfig.json",
+              "storefront/tsconfig.json",
+              "packages/*/tsconfig.json",
+              "infra/tsconfig.json",
+              "extensions/*/tsconfig.json",
+            ],
           },
         },
+      },
+      rules: {
+        // Vite/React Router virtual modules (e.g. virtual:react-router/server-build).
+        "import/no-unresolved": ["error", { ignore: ["^virtual:"] }],
       },
       extends: [
         "plugin:@typescript-eslint/recommended",
