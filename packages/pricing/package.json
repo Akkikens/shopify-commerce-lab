@@ -1,0 +1,21 @@
+{
+  "name": "@commerce-lab/pricing",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "codegen": "graphql-codegen --config codegen.ts",
+    "schema:fetch": "node scripts/fetch-admin-schema.mjs 2026-10",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.6",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-operations": "^4.6.1",
+    "graphql": "^16.11.0",
+    "typescript": "^5.9.3"
+  }
+}

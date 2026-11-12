@@ -23,7 +23,7 @@
     "test:unit": "vitest run",
     "test:function": "npm run test --workspace extensions/volume-bundle-discount",
     "test:e2e": "npm run test:e2e --workspace storefront",
-    "postinstall": "prisma generate && npm run typegen --workspace extensions/volume-bundle-discount"
+    "postinstall": "prisma generate && npm run typegen --workspace extensions/volume-bundle-discount && npm run codegen --workspace @commerce-lab/pricing"
   },
   "type": "module",
   "engines": {
@@ -43,7 +43,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "7.18.2",
-    "vite-tsconfig-paths": "^6.0.4"
+    "vite-tsconfig-paths": "^6.0.4",
+    "@commerce-lab/pricing": "*"
   },
   "devDependencies": {
     "@shopify/api-codegen-preset": "^2.0.0",
